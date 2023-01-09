@@ -43,8 +43,8 @@ class Person:
         for daily_expense in self.compute_total_expenses_per_day():
             for common_expense in common_expenses_per_day:
                 if daily_expense["date"] == common_expense["date"]:
-                    daily_balance = (common_expense["amount"] / common_expense["number_of_people"]) - daily_expense[
-                        "amount"]
+                    daily_balance = daily_expense[
+                                        "amount"] - (common_expense["amount"] / common_expense["total_people"])
 
                     self.daily_balances.append({
                         "date": daily_expense["date"],
@@ -91,13 +91,13 @@ def compute_common_expenses_per_day(people: list[Person]) -> list[dict]:
 
     return common_expenses_per_day
 
-# TODO: FINIR CETTE FONCTION -> elle ne distribue pas correctement les balance
+
 def calculate_owed_amount(people: list[Person]) -> list[tuple[str, str, float]]:
     # Calculate the total amount of money that each person owes for each day
     owed_amounts = []
     for person in people:
         for daily_balance in person.daily_balances:
-            if daily_balance["amount"] > 0:
+            if daily_balance["amount"] < 0:
                 # This person owes money for this day
                 amount_owed = -daily_balance["amount"]
                 for other_person in people:
@@ -105,7 +105,7 @@ def calculate_owed_amount(people: list[Person]) -> list[tuple[str, str, float]]:
                         continue
                     for other_daily_balance in other_person.daily_balances:
                         if other_daily_balance["date"] == daily_balance["date"]:
-                            if other_daily_balance["amount"] < 0:
+                            if other_daily_balance["amount"] > 0:
                                 # The other person is owed money for this day, so they will receive some of the money that the first person owes
                                 amount_received = min(amount_owed, other_daily_balance["amount"])
                                 owed_amounts.append((person.name, other_person.name, amount_received))
@@ -117,9 +117,9 @@ def calculate_owed_amount(people: list[Person]) -> list[tuple[str, str, float]]:
 
 
 if __name__ == "__main__":
-    expense1 = Expense(200, datetime.date(2022, 1, 1), "Food")
-    expense2 = Expense(50, datetime.date(2022, 1, 1), "Drinks")
-    expense3 = Expense(50, datetime.date(2022, 1, 1), "Snacks")
+    expense1 = Expense(50, datetime.date(2022, 1, 1), "Food")
+    expense2 = Expense(500, datetime.date(2022, 1, 1), "Drinks")
+    expense3 = Expense(250, datetime.date(2022, 1, 1), "Snacks")
 
     person1 = Person("Alice", [expense1], 3)
     person2 = Person("Bob", [expense2], 3)
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
     people = [person1, person2, person3]
 
-    common_expenses_per_day = [{"date": datetime.date(2022, 1, 1), "amount": 300, "number_of_people": 3}]
+    common_expenses_per_day = compute_common_expenses_per_day(people)
 
     for person in people:
         person.compute_daily_balances(common_expenses_per_day)

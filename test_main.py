@@ -44,7 +44,7 @@ class TestPerson:
         # Then
         daily_balances_expected = [
             {"date": datetime.date(2022, 10, 10), "amount": 0},
-            {"date": datetime.date(2022, 10, 11), "amount": 1500}
+            {"date": datetime.date(2022, 10, 11), "amount": -1500}
         ]
 
         assert daily_balances_received == daily_balances_expected
