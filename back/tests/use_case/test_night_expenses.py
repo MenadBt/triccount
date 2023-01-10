@@ -1,8 +1,8 @@
 import datetime
 
-from src.domain.expense import Expense
-from src.domain.person import Person
-from src.use_case.night_expenses import compute_night_expense, compute_share_per_night_per_person
+from back.src.domain.expense import Expense
+from back.src.domain.person import Person
+from back.src.use_case.night_expenses import compute_night_expense, compute_share_per_night_per_person
 
 
 def test_compute_night_expense():

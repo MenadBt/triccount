@@ -2,7 +2,7 @@ FROM tiangolo/uvicorn-gunicorn:python3.9
 
 WORKDIR /app
 
-COPY ./src /src
+COPY src /src
 COPY requirements.txt .
 
 

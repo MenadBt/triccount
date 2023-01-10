@@ -1,8 +1,8 @@
 import datetime
 
-from src.domain.expense import Expense
-from src.domain.person import Person
-from src.use_case.balances import compute_common_expenses_per_day, compute_owed_amount_per_day
+from back.src.domain.expense import Expense
+from back.src.domain.person import Person
+from back.src.use_case.balances import compute_common_expenses_per_day, compute_owed_amount_per_day
 
 
 def test_compute_common_expenses_per_day():
