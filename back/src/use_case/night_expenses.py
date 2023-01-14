@@ -1,4 +1,4 @@
-from back.src.domain.person import Person
+from src.domain.person import Person
 
 
 def compute_night_expense(common_expenses: float, total_number_of_nights: int) -> float:
