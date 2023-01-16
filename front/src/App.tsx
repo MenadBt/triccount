@@ -1,18 +1,43 @@
+import React from 'react';
 import './App.css';
-import ExpenseForm from './expense';
-import PersonForm from './person';
+import ExpenseForm from './forms/ExpenseForm';
+import PersonForm from './forms/PersonForm';
+
+interface Person {
+  name: string;
+  night: number;
+}
+
+interface Expense {
+  amount: number;
+  description: string;
+  person: string;
+}
+
+class App extends React.Component {
+  state = {
+    persons: [],
+    expenses: []
+  }
+
+  updatePersonsList = (newPersons: Person[]) => {
+    this.setState({ persons: newPersons });
+  }
 
 
-function App() {
+  updateExpensesList = (newExpenses: Expense[]) => {
+    this.setState({ expenses: newExpenses });
+  }
 
-  return (
-    <div className="App">
+  render() {
+    return (
       <div>
-        <PersonForm />
-        <ExpenseForm />
+        <PersonForm updatePersonsList={this.updatePersonsList} />
+        <ExpenseForm updateExpensesList={this.updateExpensesList}/>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
+export type { Person, Expense };

@@ -1,5 +1,3 @@
-// Make that shows a list of balances in a table
-
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
