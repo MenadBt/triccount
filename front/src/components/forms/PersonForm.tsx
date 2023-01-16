@@ -1,17 +1,22 @@
 import React from "react";
-import { Person } from "../App";
+import { Person } from "../Forms.component";
 
-
-class PersonForm extends React.Component<{ updatePersonsList: (persons: Person[]) => void }, { value: string, persons: Person[] }>
+class PersonForm extends React.Component<
+    { persons: Person[], updatePersonsList: (persons: Person[]) => void },
+    { value: string, persons: Person[] }>
 {
     constructor(props: any) {
         super(props);
-        this.state = { value: '', persons: [] };
+
+        this.state = { value: '', persons: this.props.persons };
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event: any) { this.setState({ value: event.target.value }); }
+    handleChange(event: any) {
+        this.setState({ value: event.target.value });
+    }
 
     handleSubmit(event: any) {
         event.preventDefault();
@@ -19,7 +24,9 @@ class PersonForm extends React.Component<{ updatePersonsList: (persons: Person[]
         const name = event.target.name.value;
         const night = event.target.night.value;
         const newPerson: Person = { name, night };
-        
+
+        this.props.updatePersonsList([...this.state.persons, newPerson]);
+
         this.setState(prevState => ({
             persons: [...prevState.persons, newPerson],
             value: ''
@@ -29,18 +36,6 @@ class PersonForm extends React.Component<{ updatePersonsList: (persons: Person[]
     render() {
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Personne:
-                        <input type="text" name="name" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <br />
-                    <label>
-                        Nuité:
-                        <input type="number" name="night" />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
                 <div>
                     <h3>List of persons</h3>
                     <ul>
@@ -49,6 +44,18 @@ class PersonForm extends React.Component<{ updatePersonsList: (persons: Person[]
                         )}
                     </ul>
                 </div>
+                
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Personne:
+                        <input type="text" name="name" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                    <label>
+                        Nuité:
+                        <input type="number" name="night" />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
         )
     }

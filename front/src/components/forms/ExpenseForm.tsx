@@ -1,16 +1,30 @@
 import React from "react";
-import { Expense, Person } from "../App";
+import { Expense, Person } from "../Forms.component";
 
-class ExpenseForm extends React.Component<{ updateExpensesList: (expenses: Expense[]) => void },
-    { value: string, expenses: Expense[], persons: Person[] }> {
+
+class ExpenseForm extends React.Component<
+    { persons: Person[], expenses: Expense[], updateExpensesList: (expenses: Expense[]) => void },
+    { value: string, expenses: Expense[], persons: Person[] }>
+{
     constructor(props: any) {
         super(props);
-        this.state = { value: '', expenses: [], persons: props.persons };
+
+        this.state = {
+            value: '',
+            expenses: [],
+            persons: props.persons
+        };
+
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event: any) { this.setState({ value: event.target.value }); }
+    handleChange(event: any) {
+        this.setState({ 
+            value: event.target.value 
+        });
+    }
 
     handleSubmit(event: any) {
         event.preventDefault();
@@ -21,6 +35,8 @@ class ExpenseForm extends React.Component<{ updateExpensesList: (expenses: Expen
 
         const newExpense: Expense = { amount, description, person };
 
+        this.props.updateExpensesList([...this.props.expenses, newExpense]);
+
         this.setState(prevState => ({
             expenses: [...prevState.expenses, newExpense],
             persons: prevState.persons,
@@ -29,31 +45,11 @@ class ExpenseForm extends React.Component<{ updateExpensesList: (expenses: Expen
     }
 
     render() {
+
+        const persons = this.props.persons;
+
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Amount
-                        <input type="number" name="amount" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                        <input type="text" name="description" />
-                    </label>
-                    <label>
-                        Person
-                        <input type="select" name="person" />
-                    </label>
-                    {/* <label>
-                        TEST PERSON
-                        <select name="persons" id="persons">
-                            {
-                                this.state.persons.map((person, index) =>
-                                    <option value={person.name}>{person.name}</option>)
-                            }
-                        </select>
-                    </label> */}
-                    <input type="submit" value="Submit" />
-                </form>
                 <div>
                     <h3>List of expenses</h3>
                     <ul>
@@ -63,6 +59,28 @@ class ExpenseForm extends React.Component<{ updateExpensesList: (expenses: Expen
                         }
                     </ul>
                 </div>
+
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Amount
+                        <input type="number" name="amount" value={this.state.value} onChange={this.handleChange} />
+                    </label>
+                    <label>
+                        Description
+                        <input type="text" name="description" />
+                    </label>
+                    <label>
+                        Personne
+                        <select name="persons" id="person">
+                            {
+                                persons.map((person, index) =>
+                                    <option key={person.name}> {person.name} </option>
+                                )
+                            }
+                        </select>
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
             </div>
         )
     }

@@ -9,6 +9,7 @@ def test_when_compute_total_common_expenses_then_return_total_common_expenses():
     expenses = [Expense(100, "2021-01-01", "toto"),
                 Expense(200, "2021-01-01", "toto"),
                 Expense(300, "2021-01-01", "toto")]
+
     # When
     result = compute_total_common_expenses(expenses)
 
@@ -51,7 +52,6 @@ def test_when_compute_total_owed_amount_then_return_total_owed_amount():
 
     total_nights = compute_total_nights(people)
     common_expenses = compute_total_common_expenses([expense for expense in people[0].expenses + people[1].expenses])
-
     night_share_per_person = compute_night_share_per_person(common_expenses, total_nights)
 
     for person in people:
