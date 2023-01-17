@@ -6,4 +6,4 @@ def compute_night_expense(common_expenses: float, total_number_of_nights: int) -
 
 
 def compute_share_per_night_per_person(person: Person, night_expense: float):
-    return night_expense * person.night_number
+    return night_expense * person.night

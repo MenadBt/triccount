@@ -7,7 +7,7 @@ def compute_total_common_expenses(expenses: list[Expense]) -> float:
 
 
 def compute_total_nights(people: list[Person]) -> int:
-    return sum(person.night_number for person in people)
+    return sum(person.night for person in people)
 
 
 def compute_night_share_per_person(common_expenses: float,
@@ -15,7 +15,7 @@ def compute_night_share_per_person(common_expenses: float,
     return common_expenses / total_number_of_nights
 
 
-def compute_total_owed_amount(people: list[Person]) -> list[tuple[str, str, float]]:
+def compute_total_owed_amount(people: list[Person]) -> list[dict[str, str, float]]:
     owed_amounts = []
 
     for person in people:
@@ -29,7 +29,11 @@ def compute_total_owed_amount(people: list[Person]) -> list[tuple[str, str, floa
                 if other_person.is_owed_money():
                     amount_received = min(amount_owed, other_person.total_balance)
 
-                    owed_amounts.append((person.name, other_person.name, amount_received))
+                    owed_amounts.append({
+                        "person1": person.name,
+                        "person2": other_person.name,
+                        "amount": amount_received
+                    })
 
                     amount_owed -= amount_received
                     other_person.total_balance -= amount_received

@@ -5,7 +5,7 @@ class Person:
     def __init__(self, name: str, expenses: list[Expense], night_number: int):
         self.name = name
         self.expenses = expenses
-        self.night_number = night_number
+        self.night = night_number
         self.daily_balances = None
         self.total_balance = None
 
@@ -13,7 +13,7 @@ class Person:
         return sum(expense.amount for expense in self.expenses)
 
     def compute_total_balance(self, night_share: float):
-        self.total_balance = self.get_total_expenses() - (night_share * self.night_number)
+        self.total_balance = self.get_total_expenses() - (night_share * self.night)
 
     def compute_total_expenses_per_day(self) -> list[dict]:
         total_expenses_per_day = {}
@@ -54,5 +54,5 @@ class Person:
         return self.total_balance > 0
 
     def __str__(self):
-        return f"{self.name} has {self.get_total_expenses()}€ in expenses. Stayed for {self.night_number} nights. \n" \
+        return f"{self.name} has {self.get_total_expenses()}€ in expenses. Stayed for {self.night} nights. \n" \
                f" Daily balances: {self.daily_balances}"

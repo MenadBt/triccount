@@ -1,13 +1,22 @@
 from pydantic import BaseModel
-from datetime import datetime
 
+from src.application.person_api import PersonApi
 from src.domain.expense import Expense
 
 
 class ExpenseApi(BaseModel):
     amount: float
-    date: datetime
     description: str
+    person: str
 
-    def to_expense(self):
-        return Expense(self.amount, self.date, self.description)
+    def to_expense(self) -> Expense:
+        return Expense(
+            amount=self.amount,
+            description=self.description,
+            person=self.person
+        )
+
+
+class PayloadApi(BaseModel):
+    persons: list[PersonApi]
+    expenses: list[ExpenseApi]

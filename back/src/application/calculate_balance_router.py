@@ -1,15 +1,25 @@
 from fastapi import APIRouter
 
-from src.application.person_api import PersonApi
-from src.use_case.balances import compute_owed_amount_per_day, compute_total_owed_amount
+from src.application.expense_api import PayloadApi
+from src.use_case.balance_simplify import compute_total_owed_amount, compute_total_nights, \
+    compute_total_common_expenses, compute_night_share_per_person
 
 balance_router = APIRouter()
 
 
-@balance_router.post("/calculate_daily_balances")
-def calculate_total_balances(persons: list[PersonApi]):
-    persons = [person.to_person() for person in persons]
+@balance_router.post("/getBalances")
+def calculate_balances(payload: PayloadApi):
+    persons_api = payload.persons
+    expenses_api = payload.expenses
 
-    owed_amount_per_day = compute_owed_amount_per_day(persons)
+    expenses = [expense_api.to_expense() for expense_api in expenses_api]
+    people = [person_api.to_person(expenses) for person_api in persons_api]
 
-    return compute_total_owed_amount(owed_amount_per_day)
+    total_nights = compute_total_nights(people)
+    common_expenses = compute_total_common_expenses(expenses)
+    night_share_per_person = compute_night_share_per_person(common_expenses, total_nights)
+
+    for person in people:
+        person.compute_total_balance(night_share_per_person)
+
+    return compute_total_owed_amount(people)
