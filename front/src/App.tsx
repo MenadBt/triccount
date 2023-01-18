@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import MainForm from './components/Forms.component';
+import MainRoutes from './components/Routes.component';
 
 
 class App extends React.Component {
@@ -8,7 +8,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <MainForm />
+        <MainRoutes />
       </div>
     );
   }

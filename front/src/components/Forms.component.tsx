@@ -14,7 +14,6 @@ interface Expense {
     person: string;
 }
 
-
 interface Balance {
     person1: string;
     person2: string;
