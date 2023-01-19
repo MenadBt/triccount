@@ -7,7 +7,7 @@ from src.use_case.balance_simplify import compute_total_owed_amount, compute_tot
 balance_router = APIRouter()
 
 
-@balance_router.post("/getBalances")
+@balance_router.post("/api/getBalances")
 def calculate_balances(payload: PayloadApi):
     persons_api = payload.persons
     expenses_api = payload.expenses
