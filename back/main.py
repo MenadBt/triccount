@@ -10,6 +10,7 @@ app.include_router(balance_router, tags=["balances"])
 
 
 origins = [
+    "http://triccount-imali.fr",
     "http://localhost",
     "http://localhost:3000",  # front
     "http://localhost:80",  # front
