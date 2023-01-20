@@ -6,7 +6,7 @@ import axios from 'axios';
 async function getBalances(persons: Person[], expenses: Expense[]): Promise<Balance[]> {
     try {
         const newBalances = await axios.post<Balance[]>(
-            'http://localhost:8080/api/getBalances',
+            'http://triccount-imali.fr/api/getBalances',
             { persons: persons, expenses: expenses },
             {
                 headers: {
