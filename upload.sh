@@ -75,8 +75,8 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    location /api {
-        proxy_pass http://127.0.0.1:8080;
+    location /api/ {
+        proxy_pass http://0.0.0.0:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -87,22 +87,3 @@ EOF
 sudo nginx -t
 sudo systemctl restart nginx
 sudo systemctl status nginx
-
-####
-
-
-
-# sudo cat > /etc/nginx/sites-enabled/triccount-imali << EOF
-# server {
-#     listen 80;
-#     server_name triccount-imali.fr;
-
-#     root /var/www/triccount-imali.fr/html;
-#     index index.html index.htm;
-
-#     location / {
-#         try_files $uri $uri/ /index.html;
-#     }
-
-# }
-# EOF

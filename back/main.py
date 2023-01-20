@@ -6,13 +6,13 @@ from src.application.calculate_balance_router import balance_router
 
 app = FastAPI()
 
-app.include_router(balance_router, tags=["balances"])
-
+app.include_router(balance_router)
 
 
 @app.get("/health")
 def read_root():
     return {"Hello": "World"}
+
 
 origins = [
     "http://triccount-imali.fr",
@@ -21,7 +21,6 @@ origins = [
     "http://localhost:80",  # front
 ]
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -29,7 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080)
