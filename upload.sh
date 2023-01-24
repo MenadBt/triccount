@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 #################
 #### BACKEND ####
 #################
+sleep 1
 
 # Update the package list
 sudo apt update
@@ -12,11 +13,11 @@ sudo apt install -y python3-pip
 sleep 1
 
 # Clone repo
-git clone https://gitlab.com/menadmgbb/triccount.git
+sudo git clone https://gitlab.com/menadmgbb/triccount.git
 
 # Setup backend environment
 cd triccount/back
-pip install -r requirements.txt
+sudo pip install -r requirements.txt
 
 # Setup backend service
 sudo cat > /etc/systemd/system/mybackend.service << EOF
@@ -47,7 +48,7 @@ sudo systemctl status mybackend.service
 cd ..
 
 # Install nodejs, npm and nginx
-curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
+sudo curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
 sudo apt-get install -y nodejs
 

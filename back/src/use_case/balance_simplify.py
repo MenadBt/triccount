@@ -32,7 +32,7 @@ def compute_total_owed_amount(people: list[Person]) -> list[dict[str, str, float
                     owed_amounts.append({
                         "person1": person.name,
                         "person2": other_person.name,
-                        "amount": amount_received
+                        "amount": round(amount_received, 2)
                     })
 
                     amount_owed -= amount_received

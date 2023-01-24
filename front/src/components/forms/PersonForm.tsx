@@ -1,5 +1,37 @@
 import React from "react";
 import { Person } from "../Forms.component";
+import PersonList from "../PersonsList.component";
+
+export const formStyle = {
+    textAlign: 'center' as 'center',
+    margin: '10px',
+    padding: '10px',
+    borderRadius: '5px',
+    width: '400px',
+    height: 'auto',
+    overflow: 'auto'
+};
+
+export const inputStyle = {
+    margin: '10px',
+    padding: '10px',
+    borderRadius: '5px',
+    width: '100px',
+    height: '10px',
+    overflow: 'auto',
+    textAlign: 'center' as 'center'
+};
+
+export const submitStyle = {
+    margin: '10px',
+    padding: '10px',
+    borderRadius: '5px',
+    width: '100px',
+    height: '50px',
+    overflow: 'auto',
+    textAlign: 'center' as 'center'
+};
+
 
 class PersonForm extends React.Component<
     { persons: Person[], updatePersonsList: (persons: Person[]) => void },
@@ -25,6 +57,23 @@ class PersonForm extends React.Component<
         const night = event.target.night.value;
         const newPerson: Person = { name, night };
 
+        for (let person of this.state.persons) {
+            if (person.name === newPerson.name) {
+                alert("Cette personne est déjà dans la liste");
+                return;
+            }
+
+            if (newPerson.night < 1) {
+                alert("Le nombre de nuits doit être supérieur à 0");
+                return;
+            }
+
+            if (newPerson.name === "") {
+                alert("Le nom ne peut pas être vide");
+                return;
+            }
+        }
+
         this.props.updatePersonsList([...this.state.persons, newPerson]);
 
         this.setState(prevState => ({
@@ -35,26 +84,25 @@ class PersonForm extends React.Component<
 
     render() {
         return (
-            <div>
-                <div>
-                    <h3>List of persons</h3>
-                    <ul>
-                        {this.state.persons.map((person, index) =>
-                            <li key={index}>{person.name} - {person.night} nuités</li>
-                        )}
-                    </ul>
-                </div>
-                
+            <div style={formStyle}>
+                <PersonList persons={this.state.persons} />
                 <form onSubmit={this.handleSubmit}>
                     <label>
-                        Personne:
-                        <input type="text" name="name" value={this.state.value} onChange={this.handleChange} />
+                        <input style={inputStyle} 
+                               placeholder="Personne"
+                               type="text"
+                               name="name"
+                               value={this.state.value} 
+                               onChange={this.handleChange} />
                     </label>
                     <label>
-                        Nuité:
-                        <input type="number" name="night" />
+                        <input style={inputStyle} 
+                               placeholder="Nuits"
+                               type="number"
+                               name="night" />
+                        
                     </label>
-                    <input type="submit" value="Submit" />
+                    <input style={submitStyle} type="submit" value="Ajouter" />
                 </form>
             </div>
         )

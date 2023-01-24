@@ -1,6 +1,17 @@
 import React from "react";
 import { Expense, Person } from "../Forms.component";
+import { inputStyle, submitStyle } from "./PersonForm";
 
+// Style for select input
+const selectStyle = {
+    margin: '10px',
+    padding: '10px',
+    borderRadius: '5px',
+    width: '140px',
+    height: '35px',
+    overflow: 'auto',
+    textAlign: 'center' as 'center'
+};
 
 class ExpenseForm extends React.Component<
     { persons: Person[], expenses: Expense[], updateExpensesList: (expenses: Expense[]) => void },
@@ -35,6 +46,15 @@ class ExpenseForm extends React.Component<
 
         const newExpense: Expense = { amount, description, person };
 
+
+        for (let expense of this.props.expenses) {
+            if (description === "" || amount === "" || person === "") {
+                alert("Une donnée est manquante dans le formulaire");
+                return;
+            }
+        }
+
+
         this.props.updateExpensesList([...this.props.expenses, newExpense]);
 
         this.setState(prevState => ({
@@ -51,7 +71,7 @@ class ExpenseForm extends React.Component<
         return (
             <div>
                 <div>
-                    <h3>List of expenses</h3>
+                    <h3>Dépenses</h3>
                     <ul>
                         {
                             this.state.expenses.map((expense, index) =>
@@ -62,16 +82,22 @@ class ExpenseForm extends React.Component<
 
                 <form onSubmit={this.handleSubmit}>
                     <label>
-                        Amount
-                        <input type="number" name="amount" value={this.state.value} onChange={this.handleChange} />
+                        <input style={inputStyle}
+                                placeholder="Amount" 
+                                type="number"
+                                name="amount"
+                                value={this.state.value}
+                                onChange={this.handleChange} />
                     </label>
                     <label>
-                        Description
-                        <input type="text" name="description" />
+                        <input 
+                            style={inputStyle}
+                            placeholder="Description" 
+                            type="text"
+                            name="description" />
                     </label>
                     <label>
-                        Personne
-                        <select name="persons" id="person">
+                        <select style={selectStyle} name="persons" id="person">
                             {
                                 persons.map((person, index) =>
                                     <option key={person.name}> {person.name} </option>
@@ -79,7 +105,7 @@ class ExpenseForm extends React.Component<
                             }
                         </select>
                     </label>
-                    <input type="submit" value="Submit" />
+                    <input style={submitStyle} type="submit" value="Submit" />
                 </form>
             </div>
         )
