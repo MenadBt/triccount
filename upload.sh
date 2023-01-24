@@ -6,7 +6,10 @@
 
 # Update the package list
 sudo apt update
+sleep 1
+
 sudo apt install -y python3-pip
+sleep 1
 
 # Clone repo
 git clone https://gitlab.com/menadmgbb/triccount.git
@@ -22,7 +25,7 @@ Description=My FastAPI Backend
 
 [Service]
 WorkingDirectory=/home/ubuntu/triccount/back
-ExecStart=/usr/local/bin/uvicorn main:app --host 0.0.0.0 --port 8080
+ExecStart=/usr/bin/python3 main.py
 User=ubuntu
 Restart=always
 
@@ -48,6 +51,8 @@ curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
 sudo apt-get install -y nodejs
 
+sleep 1
+
 sudo apt-get install -y npm
 sudo apt-get install -y nginx
 
@@ -56,33 +61,15 @@ cd front
 sudo npm install
 sudo npm run build
 
+sleep 1
+
 # Move frontend files to /var/www/triccount-imali/html
 sudo mkdir -p /var/www/triccount-imali.fr/html
 
 sudo cp -r build/* /var/www/triccount-imali.fr/html
 
-
 # Setup frontend service
-sudo cat > /etc/nginx/conf.d/myreactapp.conf << EOF
-server {
-    listen 80;
-    server_name triccount-imali.fr;
-
-    root /var/www/triccount-imali.fr/html;
-    index index.html index.htm;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    location /api/ {
-        proxy_pass http://0.0.0.0:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-}
-EOF
+sudo mv myreactapp.conf /etc/nginx/conf.d/
 
 sudo nginx -t
 sudo systemctl restart nginx
