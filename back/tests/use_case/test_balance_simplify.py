@@ -61,4 +61,4 @@ def test_when_compute_total_owed_amount_then_return_total_owed_amount():
     result = compute_total_owed_amount(people)
 
     # Then
-    assert result == [("Laura", "Flavien", 100)]
+    assert result == [{'amount': 100.0, 'person1': 'Laura', 'person2': 'Flavien'}]

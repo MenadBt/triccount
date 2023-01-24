@@ -1,6 +1,7 @@
 import datetime
-from back.src.domain.expense import Expense
-from back.src.domain.person import Person
+
+from src.domain.expense import Expense
+from src.domain.person import Person
 
 
 class TestPerson:
