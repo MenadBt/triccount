@@ -3,8 +3,8 @@ import { Person } from './Forms.component';
 
 const personStyle = {
     textAlign: 'center' as 'center',
-    margin: '10px',
-    padding: '10px',
+    margin: 'auto',
+    padding: 'auto',
     borderRadius: '5px',
     width: '300px',
     height: 'auto',
@@ -15,12 +15,6 @@ const tableStyle = {
     borderCollapse: 'collapse' as 'collapse',
     width: '100%'
 };
-
-const tbodyStyle = {
-    listStyleType: 'none',
-    padding: '0'
-};
-
 
 class PersonList extends React.Component<{ persons: Person[] }> {
     render() {
@@ -34,7 +28,7 @@ class PersonList extends React.Component<{ persons: Person[] }> {
                             <th>Nuits</th>
                         </tr>
                     </thead>
-                    <tbody style={tbodyStyle}>
+                    <tbody>
                         {this.props.persons.map((person, index) =>
                             <tr key={index}>
                                 <td>{person.name}</td> 

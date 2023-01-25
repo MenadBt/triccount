@@ -6,7 +6,7 @@ import axios from 'axios';
 async function getBalances(persons: Person[], expenses: Expense[]): Promise<Balance[]> {
     try {
         const newBalances = await axios.post<Balance[]>(
-            'http://localhost:8080/api/getBalances',
+            'http://triccount-imali.fr/api/getBalances',
             { persons: persons, expenses: expenses },
             {
                 headers: {
@@ -23,6 +23,31 @@ async function getBalances(persons: Person[], expenses: Expense[]): Promise<Bala
         return [];
     }
 }
+
+const balanceStyle = {
+    textAlign: 'center' as 'center',
+    margin: '10px',
+    padding: '10px',
+    borderRadius: '5px',
+    width: '300px',
+    height: 'auto',
+    overflow: 'auto',
+    border: '1px solid black',
+};
+
+
+export const submitStyle = {
+    // center the button
+    margin: 'auto',
+    padding: 'auto',
+    borderRadius: '5px',
+    width: 'auto',
+    height: '50px',
+    overflow: 'auto',
+    textAlign: 'center' as 'center'
+};
+
+
 
 class BalanceComponent extends React.Component<
     { persons: Person[], expenses: Expense[], balances: Balance[], updateBalanceList: (newBalances: Balance[]) => void },
@@ -51,21 +76,20 @@ class BalanceComponent extends React.Component<
 
     render() {
         return (
-            <div>
+            <div style={balanceStyle}>
                 <div>
-                    <h3>Équilibrages</h3>
                     {
                         <ul>
                             {
                                 this.state.balances.map((balance, index) =>
-                                    <li key={index}>{balance.person1} doit à {balance.person2} {balance.amount} euros</li>)
+                                    <li key={index}><b>{balance.person1}</b> doit à <b>{balance.person2}</b> {balance.amount} euros</li>)
                             }
                         </ul>
                     }
                 </div>
 
                 <form onSubmit={this.handleSubmit}>
-                    <input type="submit" value="Submit" />
+                    <input style={submitStyle} type="submit" value="Faire les comptes" />
                 </form>
             </div>
         )

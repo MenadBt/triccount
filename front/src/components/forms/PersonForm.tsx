@@ -7,10 +7,12 @@ export const formStyle = {
     margin: '10px',
     padding: '10px',
     borderRadius: '5px',
-    width: '400px',
+    width: '600px',
     height: 'auto',
-    overflow: 'auto'
+    overflow: 'auto',
+    border: '1px solid black',
 };
+
 
 export const inputStyle = {
     margin: '10px',
@@ -62,17 +64,19 @@ class PersonForm extends React.Component<
                 alert("Cette personne est déjà dans la liste");
                 return;
             }
-
-            if (newPerson.night < 1) {
-                alert("Le nombre de nuits doit être supérieur à 0");
-                return;
-            }
-
-            if (newPerson.name === "") {
-                alert("Le nom ne peut pas être vide");
-                return;
-            }
         }
+
+        if (newPerson.night < 1) {
+            alert("Le nombre de nuits doit être supérieur à 0");
+            return;
+        }
+
+        if (newPerson.name === "") {
+            alert("Le nom ne peut pas être vide");
+            return;
+        }
+
+        console.log(newPerson.name, newPerson.night)
 
         this.props.updatePersonsList([...this.state.persons, newPerson]);
 
@@ -89,7 +93,7 @@ class PersonForm extends React.Component<
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <input style={inputStyle} 
-                               placeholder="Personne"
+                               placeholder="Nom"
                                type="text"
                                name="name"
                                value={this.state.value} 

@@ -1,0 +1,40 @@
+stages:
+  - build
+  - deploy
+
+build_backend:
+  stage: build
+  image: python:3.9
+  script:
+    - apt-get update
+    - apt-get install -y git
+    - git clone https://gitlab.com/menadmgbb/triccount.git
+    - cd triccount/back
+    - pip install -r requirements.txt
+  tags:
+    - docker
+
+build_frontend:
+  stage: build
+  image: node:19
+  script:
+    - apt-get update
+    - apt-get install -y git
+    - git clone https://gitlab.com/menadmgbb/triccount.git
+    - cd triccount/front
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - triccount/front/build
+  tags:
+    - docker
+
+deploy:
+  stage: deploy
+  image: ubuntu:latest
+  before_script:
+    - apt-get update
+    - apt-get install -y openssh-client
+  script:
+    - chmod 400 my

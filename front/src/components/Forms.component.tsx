@@ -20,6 +20,34 @@ interface Balance {
     amount: number;
 }
 
+const fillInStyle = {
+    display: 'flex' as 'flex',
+    flexDirection: 'row' as 'row',
+    justifyContent: 'space-around' as 'space-around',
+    alignItems: 'center' as 'center',
+    margin: 'auto',
+    padding: 'auto',
+    borderRadius: '5px',
+    width: '80%',
+    height: 'auto',
+    overflow: 'auto'
+};
+
+// Center Balance Component
+const balanceStyle = {
+    display: 'flex' as 'flex',
+    flexDirection: 'row' as 'row',
+    justifyContent: 'center' as 'center',
+    alignItems: 'center' as 'center',
+    margin: 'auto',
+    padding: 'auto',
+    borderRadius: '5px',
+    width: '80%',
+    height: 'auto',
+    overflow: 'auto'
+};
+
+
 class MainForm extends React.Component<any, any>{
 
     constructor(props: any) {
@@ -54,13 +82,17 @@ class MainForm extends React.Component<any, any>{
 
         return (
             <div>
-                <PersonForm persons={persons} updatePersonsList={this.updatePersonsList} />
-                <ExpenseForm persons={persons} expenses={expenses} updateExpensesList={this.updateExpensesList} />
-                <BalanceComponent
-                    persons={persons}
-                    expenses={expenses}
-                    balances={balances}
-                    updateBalanceList={this.updateBalanceList} />
+                <div style={fillInStyle}>
+                    <PersonForm persons={persons} updatePersonsList={this.updatePersonsList} />
+                    <ExpenseForm persons={persons} expenses={expenses} updateExpensesList={this.updateExpensesList} />
+                </div>
+                <div style={balanceStyle}>
+                    <BalanceComponent
+                        persons={persons}
+                        expenses={expenses}
+                        balances={balances}
+                        updateBalanceList={this.updateBalanceList} />
+                </div>
             </div>
         )
     }
