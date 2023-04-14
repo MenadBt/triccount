@@ -1,0 +1,11 @@
+[Unit]
+Description=My FastAPI Backend
+
+[Service]
+WorkingDirectory=/home/ubuntu/triccount/back/src
+ExecStart=/usr/bin/python3 main.py
+User=ubuntu
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

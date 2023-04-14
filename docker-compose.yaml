@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile.local
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=triccount
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.local
+    restart: always
+    ports:
+      - 3000:3000
+
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: triccount
+    #volumes:
+    #  - postgres_data:/var/lib/postgresql/data/
+
+#volumes:
+#  postgres_data:
