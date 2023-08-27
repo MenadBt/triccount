@@ -10,4 +10,4 @@ expense_router = APIRouter()
 @expense_router.post("/api/createExpense")
 def add_new_expense(expense_api: ExpenseApi):
     expense: Expense = expense_api.to_expense()
-    create_expense(expense)
+    # create_expense(expense)

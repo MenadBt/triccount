@@ -1,4 +1,3 @@
-from dependencies import person_repo
 from domain.person import Person
 from infrastructure.objects_db import PersonDb
 
@@ -10,4 +9,4 @@ def create_person(person: Person):
         nights=person.nights,
     )
 
-    person_repo.create(person_db)
+    # person_repo.create(person_db)

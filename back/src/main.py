@@ -5,12 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from application.calculate_balance_router import balance_router
 from application.expense.expense_router import expense_router
 from application.person.person_router import person_router
-from application.trip.trip_router import trip_router
 
 app = FastAPI()
 
 app.include_router(balance_router)
-app.include_router(trip_router)
+# app.include_router(trip_router)
 app.include_router(person_router)
 app.include_router(expense_router)
 
