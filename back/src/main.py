@@ -19,12 +19,7 @@ def read_root():
     return {"Hello": "World"}
 
 
-origins = [
-    "http://triccount-imali.fr",
-    "http://localhost",
-    "http://localhost:3000",  # front
-    "http://localhost:80",  # front
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,

@@ -65,6 +65,12 @@ sudo mkdir -p /var/www/triccount-imali.fr/html
 sudo cp -r build/* /var/www/triccount-imali.fr/html
 
 echo "Setup frontend service"
+
+echo "Removing default nginx conf on /etc/nginx/sites-enabled/default"
+sudo rm /etc/nginx/sites-enabled/default
+sudo systemctl reload nginx
+
+echo "Setup nginx conf of the projet"
 sudo mv myreactapp.conf /etc/nginx/conf.d/
 
 sudo nginx -t
