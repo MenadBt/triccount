@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import BalanceComponent from "./balance/Balance.component";
 import ExpenseForm from "./expense/ExpenseForm";
 import PersonForm from "./person/PersonForm";
-import {Container, Row, Col} from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Papa from 'papaparse';
+import * as XLSX from 'xlsx';
 
 interface Person {
     name: string;
@@ -24,15 +26,13 @@ interface Balance {
     amount: number;
 }
 
-
-interface MainFormProps {
-}
+interface MainFormProps {}
 
 const MainForm: React.FC<MainFormProps> = () => {
     const [persons, setPersons] = useState<Person[]>([]);
     const [expenses, setExpenses] = useState<Expense[]>([]);
     const [balances, setBalances] = useState<Balance[]>([]);
-    const {id} = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string }>();
 
     const updatePersonsList = (newPersons: Person[]) => {
         setPersons(newPersons);
@@ -68,9 +68,6 @@ const MainForm: React.FC<MainFormProps> = () => {
         );
 
         setPersons(newPersons);
-        // Remove person from database
-
-
         setExpenses(newExpenses);
     };
 
@@ -89,7 +86,7 @@ const MainForm: React.FC<MainFormProps> = () => {
                         personsResponse,
                         expensesResponse
                     }
-                } = await axios.get(`${apiUrl}/api/getAllInfoFromTrip/${id}`, {headers: headers});
+                } = await axios.get(`${apiUrl}/api/getAllInfoFromTrip/${id}`, { headers: headers });
                 setPersons(personsResponse);
                 setExpenses(expensesResponse);
             } catch (error) {
@@ -99,6 +96,43 @@ const MainForm: React.FC<MainFormProps> = () => {
 
         fetchData();
     }, [id]);
+
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, type: 'persons' | 'expenses') => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = e.target?.result;
+                if (data) {
+                    const workbook = XLSX.read(data, { type: 'binary' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const csv = XLSX.utils.sheet_to_csv(worksheet);
+                    parseCsv(csv, type);
+                }
+            };
+            reader.readAsBinaryString(file);
+        }
+    };
+
+    const parseCsv = (csv: string, type: 'persons' | 'expenses') => {
+        Papa.parse(csv, {
+            header: true,
+            dynamicTyping: true,
+            complete: (results) => {
+                if (type === 'persons') {
+                    const data = results.data as Person[];
+                    setPersons(prevPersons => [...prevPersons, ...data]);
+                } else {
+                    const data = results.data as Expense[];
+                    setExpenses(prevExpenses => [...prevExpenses, ...data]);
+                }
+            },
+            error: (error: any) => {
+                console.error('Error parsing CSV file:', error);
+            },
+        });
+    };
 
     return (
         <Container fluid>
@@ -128,9 +162,21 @@ const MainForm: React.FC<MainFormProps> = () => {
                     />
                 </Col>
             </Row>
+            <Row className="justify-content-center">
+                <Col md={6}>
+                    <div>
+                        <label>Fichier pour upload les personnes. Format: (name, night, trip_id): </label>
+                        <input type="file" accept=".csv,.xls,.xlsx" onChange={(e) => handleFileUpload(e, 'persons')} />
+                    </div>
+                    <div>
+                        <label>Fichier pour upload les dépenses. Format: (amount, description, person): </label>
+                        <input type="file" accept=".csv,.xls,.xlsx" onChange={(e) => handleFileUpload(e, 'expenses')}/>
+                    </div>
+                </Col>
+            </Row>
         </Container>
     );
 };
 
 export default MainForm;
-export type {Person, Expense, Balance};
+export type { Person, Expense, Balance };

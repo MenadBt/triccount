@@ -56,7 +56,7 @@ resource "aws_instance" "web" {
     aws_security_group.allow_web.id,
   ]
 
-  user_data = file("upload.sh")
+  #user_data = file("upload.sh")
 
   tags = {
     Name = "triccount-web"

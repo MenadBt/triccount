@@ -1,25 +1,37 @@
 #!/bin/bash
 
+LOGFILE="/var/log/setup_script.log"
+
+exec > >(tee -a $LOGFILE) 2>&1
+
 #################
 #### BACKEND ####
 #################
+echo "SETUP BACK"
+
 sleep 1
 
-# Update the package list
+echo "Update the package list"
 sudo apt update
 sleep 1
 
+echo "Install python3 pip"
 sudo apt install -y python3-pip
 sleep 1
 
-# Clone repo
+echo "Clone repo"
 sudo git clone https://gitlab.com/menadmgbb/triccount.git
 
-# Setup backend environment
+echo "Setup backend environment"
 cd triccount/back
-sudo pip install -r requirements.txt
 
-# Setup backend service
+sudo apt install python3.10-venv -y
+sudo python3 -m venv .venv
+source .venv/bin/activate
+sudo python3 -m pip install -r requirements.txt
+# sudo pip install -r requirements.txt
+
+echo "Setup backend service"
 sudo cp mybackend.service /etc/systemd/system/
 
 sudo systemctl daemon-reload
@@ -31,10 +43,10 @@ sudo systemctl status mybackend.service
 #################
 #### FRONTEND ####
 #################
-
+echo "SETUP FRONT"
 cd ..
 
-# Install nodejs, npm and nginx
+echo "Install nodejs, npm and nginx"
 sudo curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
 sudo apt-get install -y nodejs
@@ -44,21 +56,24 @@ sleep 1
 sudo apt-get install -y npm
 sudo apt-get install -y nginx
 
-# Install dependencies and build production files
+echo "Install dependencies and build production files"
 cd front
 sudo npm install
 sudo npm run build
 
 sleep 1
 
-# Move frontend files to /var/www/triccount-imali/html
+echo "Move frontend files to /var/www/triccount-imali/html"
 sudo mkdir -p /var/www/triccount-imali.fr/html
 
 sudo cp -r build/* /var/www/triccount-imali.fr/html
 
-# Setup frontend service
+echo "Setup frontend service"
 sudo mv myreactapp.conf /etc/nginx/conf.d/
 
 sudo nginx -t
 sudo systemctl restart nginx
+sudo systemctl status nginx
+
+sudo systemctl status mybackend.service
 sudo systemctl status nginx
