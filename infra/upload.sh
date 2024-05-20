@@ -1,9 +1,5 @@
 #!/bin/bash
 
-LOGFILE="/var/log/setup_script.log"
-
-exec > >(tee -a $LOGFILE) 2>&1
-
 #################
 #### BACKEND ####
 #################
